@@ -32,16 +32,7 @@ public class TxHandler {
     		return false;
     	}
     	
-    	
-    	
     	return true;
-    	
-    	
-    	//step 2
-    	
-    	
-
-        // IMPLEMENT THIS
     }
     
     // (2) the signatures on each input of {@code tx} are valid 
