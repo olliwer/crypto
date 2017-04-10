@@ -1,12 +1,21 @@
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.security.PublicKey;
+import java.security.Signature;
+import java.security.SignatureException;
+import java.util.ArrayList;
+
 public class TxHandler {
 
+    private UTXOPool utxoPool;
+    
     /**
      * Creates a public ledger whose current UTXOPool (collection of unspent transaction outputs) is
      * {@code utxoPool}. This should make a copy of utxoPool by using the UTXOPool(UTXOPool uPool)
      * constructor.
      */
     public TxHandler(UTXOPool utxoPool) {
-        // IMPLEMENT THIS
+        this.utxoPool = utxoPool;
     }
 
     /**
@@ -19,7 +28,32 @@ public class TxHandler {
      *     values; and false otherwise.
      */
     public boolean isValidTx(Transaction tx) {
+    	if (!utxoPool.checkOutputClaim(tx) || !verifySignatures(tx)){
+    		return false;
+    	}
+    	
+    	
+    	
+    	return true;
+    	
+    	
+    	//step 2
+    	
+    	
+
         // IMPLEMENT THIS
+    }
+    
+    // (2) the signatures on each input of {@code tx} are valid 
+    public boolean verifySignatures(Transaction tx) {
+    	for (int i = 0; i < tx.getInputs().size(); i++) {
+    		Transaction.Input input = tx.getInput(i);
+    		Transaction.Output output = tx.getOutput(i);
+    		if (!Crypto.verifySignature(output.address, tx.getRawDataToSign(i), input.signature)){
+    			return false;
+    		}
+    	}
+    	return true;
     }
 
     /**
@@ -29,6 +63,9 @@ public class TxHandler {
      */
     public Transaction[] handleTxs(Transaction[] possibleTxs) {
         // IMPLEMENT THIS
+    	
+    	return null;
     }
+    
 
 }
