@@ -28,17 +28,6 @@ public class UTXOPool {
     public void removeUTXO(UTXO utxo) {
         H.remove(utxo);
     }
-    
-    /** (1) all outputs claimed by {@code tx} are in the current UTXO pool */
-    public boolean checkOutputClaim(Transaction tx) {
-		ArrayList<Transaction.Output> outputs = tx.getOutputs();
-    	for (Transaction.Output output : outputs) {
-    		if (!H.values().contains(output)){
-    			return false;
-    		}
-    	}
-    	return true;
-    }
 
     /**
      * @return the transaction output corresponding to UTXO {@code utxo}, or null if {@code utxo} is

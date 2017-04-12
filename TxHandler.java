@@ -28,25 +28,34 @@ public class TxHandler {
      *     values; and false otherwise.
      */
     public boolean isValidTx(Transaction tx) {
-    	if (!utxoPool.checkOutputClaim(tx) || !verifySignatures(tx)){
-    		return false;
+    	
+    	
+    	
+    	for (int i = 0; i < tx.numOutputs(); i++) {
+    		Transaction.Output output = tx.getOutput(i);
+    		Transaction.Input input = tx.getInput(i);
+    		
+    		//1
+    		UTXO u = new UTXO(input.prevTxHash, i);
+    		if (!utxoPool.contains(u)){
+    			return false;
+    		}
+    
+    		//2
+    		if (!Crypto.verifySignature(output.address, input.prevTxHash, input.signature)){
+    			return false;
+    		}
+    		
+    		
+    		
+    		
+    		
     	}
+    	
     	
     	return true;
     }
     
-    // (2) the signatures on each input of {@code tx} are valid 
-    public boolean verifySignatures(Transaction tx) {
-    	for (int i = 0; i < tx.getInputs().size(); i++) {
-    		Transaction.Input input = tx.getInput(i);
-    		Transaction.Output output = tx.getOutput(i);
-    		if (!Crypto.verifySignature(output.address, tx.getRawDataToSign(i), input.signature)){
-    			return false;
-    		}
-    	}
-    	return true;
-    }
-
     /**
      * Handles each epoch by receiving an unordered array of proposed transactions, checking each
      * transaction for correctness, returning a mutually valid array of accepted transactions, and
