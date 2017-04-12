@@ -1,10 +1,3 @@
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-import java.security.PublicKey;
-import java.security.Signature;
-import java.security.SignatureException;
-import java.util.ArrayList;
-
 public class TxHandler {
 
     private UTXOPool utxoPool;
