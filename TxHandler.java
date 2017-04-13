@@ -8,7 +8,7 @@ public class TxHandler {
      * constructor.
      */
     public TxHandler(UTXOPool utxoPool) {
-        this.utxoPool = utxoPool;
+        this.utxoPool = new UTXOPool(utxoPool);
     }
 
     /**
@@ -21,27 +21,31 @@ public class TxHandler {
      *     values; and false otherwise.
      */
     public boolean isValidTx(Transaction tx) {
-    	
-    	
+    
+    	UTXOPool unclaimed = new UTXOPool();
     	
     	for (int i = 0; i < tx.numOutputs(); i++) {
     		Transaction.Output output = tx.getOutput(i);
     		Transaction.Input input = tx.getInput(i);
     		
-    		//1
-    		UTXO u = new UTXO(input.prevTxHash, i);
-    		if (!utxoPool.contains(u)){
+    		//1 & 3
+    		UTXO u = new UTXO(input.prevTxHash, input.outputIndex);
+    		if (!utxoPool.contains(u) || unclaimed.contains(u)){
     			return false;
     		}
+    		unclaimed.addUTXO(u, output);
     
     		//2
     		if (!Crypto.verifySignature(output.address, input.prevTxHash, input.signature)){
     			return false;
     		}
     		
+    		//4
+    		if (output.value < 0) {
+    			return false;
+    		}
     		
-    		
-    		
+    		//5
     		
     	}
     	
