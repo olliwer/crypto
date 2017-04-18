@@ -5,3 +5,7 @@
 /TxHandler.class
 /UTXO.class
 /UTXOPool.class
+/main.class
+/Main.class
+/MaxFeeTxHandler.class
+/MaxFeeTxHandler$1.class
